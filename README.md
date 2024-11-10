@@ -16,6 +16,8 @@ Este es nuestro menu de la app
                     ║        0 - Salir.                               ║
                     ║                                                 ║
                     ║***********          FIN MENU          **********║
+                    ![image](https://github.com/user-attachments/assets/650e1085-5834-4447-adc0-7a7ab04e5b9a)
+
 
 ## cada opción
 Nos lleva trabajar con nuestra base de dato biblioteca
