@@ -2,8 +2,7 @@
 Desafío de alura latam 
 ## Descripción
 Este es nuestro menu de la app
-
-                    ![image](https://github.com/user-attachments/assets/650e1085-5834-4447-adc0-7a7ab04e5b9a)
+![image](https://github.com/user-attachments/assets/e3702069-6358-42e9-aaf2-8bff57cff995)
 
 ## cada opción
 Nos lleva trabajar con nuestra base de dato biblioteca
