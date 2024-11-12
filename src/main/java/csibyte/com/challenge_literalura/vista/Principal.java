@@ -11,6 +11,7 @@ import csibyte.com.challenge_literalura.servicio.AgregarServicio;
 import csibyte.com.challenge_literalura.servicio.ConectarApi;
 import csibyte.com.challenge_literalura.servicio.ConvierteDatos;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
@@ -47,37 +48,43 @@ public class Principal {
                     ║***********          FIN MENU          **********║
                     """;
             System.out.println("\n********** Bienvenido A Biblioteca Alura **********\n\n" + menu);
-            opcion =teclado.nextInt();
-            teclado.nextLine();
-            switch (opcion){
-                case 1:
-                    buscarLibroEnWeb();
-                    break;
-                case 2:
-                    agregarManualmente();
-                    break;
-                case 3:
-                    listarLibrosRegisrados();
-                    break;
-                case 4:
-                    buscarLibroPorNombre();
-                    break;
-                case 5:
-                    listarAutores();
-                    break;
-                case 6:
-                    listarAutoresVivos();
-                    break;
-                case 7:
-                    listarLibrosIdioma();
-                    break;
-                case 0:
-                    System.out.println("Se esta cerrando la Aplicacion... ");
-                    break;
-                default:
-                    System.out.println("Opcción invalida -- Digite una opcción del menu");
-                    break;
-            }
+                try {//con esto tabajamos la posible entrada de una opcion que no es numerica.
+                    opcion =teclado.nextInt();
+                    teclado.nextLine();
+                    switch (opcion){
+                        case 1:
+                            buscarLibroEnWeb();
+                            break;
+                        case 2:
+                            agregarManualmente();
+                            break;
+                        case 3:
+                            listarLibrosRegisrados();
+                            break;
+                        case 4:
+                            buscarLibroPorNombre();
+                            break;
+                        case 5:
+                            listarAutores();
+                            break;
+                        case 6:
+                            listarAutoresVivos();
+                            break;
+                        case 7:
+                            listarLibrosIdioma();
+                            break;
+                        case 0:
+                            System.out.println("Se esta cerrando la Aplicacion... ");
+                            break;
+                        default:
+                            System.out.println("Opcción invalida -- Digite una opcción del menu");
+                            break;
+                    }
+                }catch (InputMismatchException e){
+                    System.out.println("¡Cuidado! Solo puedes introducir una opcion del menú.");
+                    teclado.next();//Avanza el cursor para evitar entrar en un ciclo infinito
+                    //opcion = 0;// da por terminado la ejecucion
+                }
         }
     }
     //buscamos la capruta de los datos del libro
@@ -193,6 +200,13 @@ public class Principal {
 
     private void listarLibrosIdioma() {
         List<String> idiomas = List.of("es","en","fr","pt","hu","it");
+        Map<String,String> idiomasCodigo =new HashMap<>();
+        idiomasCodigo.put("Español","es");
+        idiomasCodigo.put("Ingles","en");
+        idiomasCodigo.put("Frances","fr");
+        idiomasCodigo.put("Portugues","pt");
+        idiomasCodigo.put("Hungaro","hu");
+        idiomasCodigo.put("Italiano","it");
         String menuIdiomas = """
                 ║***********  MENU IDIOMAS **********║
                 ║            es - Español.           ║
@@ -205,17 +219,28 @@ public class Principal {
                         Elije una Opción
                 """;
         System.out.println(menuIdiomas);
-        var idioma = teclado.nextLine().toLowerCase();
+        String idioma = teclado.nextLine();
+        String idiomaCapital= idioma.substring(0,1).toUpperCase() + idioma.substring(1).toLowerCase();
+
         //validamos el idiomas
-        while (!idiomas.contains(idioma)){
-            System.out.println("Es invalido, Digite una opción del menú");
-            idioma = teclado.nextLine();
-        }
-        List<Libro> bdLibro = repositorio.filterLibroByLanguage(idioma);
-        if (bdLibro == null || bdLibro.isEmpty()){
-            System.out.println("║****************************************║\n║No Hay libros con el idioma seleccionado║\n║**************************************║");
-        }else {
-            bdLibro.forEach(System.out::println);
+        String nombre = idiomasCodigo.get(idiomaCapital);
+        System.out.println("transformado "+nombre);
+
+        if (nombre != null){
+            System.out.println("el idioma es "+nombre);
+            idioma=nombre;
+            while (!idiomas.contains(idioma)){
+                System.out.println("Es invalido, Digite una opción del menú");
+                idioma = teclado.nextLine();
+            }
+            List<Libro> bdLibro = repositorio.filterLibroByLanguage(idioma);
+            if (bdLibro == null || bdLibro.isEmpty()){
+                System.out.println("║****************************************║\n║No Hay libros con el idioma seleccionado║\n║**************************************║");
+            }else {
+                bdLibro.forEach(System.out::println);
+            }
+        }else{
+            System.out.println("idioma no esta en lista "+idioma);
         }
     }
 
