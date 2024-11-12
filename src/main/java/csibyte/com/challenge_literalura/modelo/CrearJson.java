@@ -30,7 +30,7 @@ public class CrearJson {
             //crear resultado libro
             System.out.println("Digite el nombre del libro a agregar BD");
             String titulo = teclado.nextLine();
-            System.out.println("Digite los idioma del Libro ");
+            System.out.println("Digite los idioma del Libro (su codigo es, fr, en, hu, pt, it)");
             String idioma = teclado.nextLine();
             Long descargas = (long) 0.0;
 
